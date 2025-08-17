@@ -24,7 +24,7 @@ El script implementa las siguientes funcionalidades:
 
 ## 📂 Estructura del proyecto  
 /TP2-JS   
-|-- index.js # Script principal con toda la lógica   
+|-- app.js # Script principal con toda la lógica   
 |-- productos.json # Archivo local donde se guardan los productos   
 |-- package.json # Archivo de configuración de Node.js   
 
