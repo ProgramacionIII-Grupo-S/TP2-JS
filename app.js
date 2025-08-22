@@ -1,7 +1,6 @@
 const fs = require('fs');
 const fetch = require('node-fetch').default;
 const API_URL = 'https://fakestoreapi.com/products';
-const FILE_PATH = './productos.json';
 const readline = require('readline');
 
 
