@@ -3,6 +3,7 @@ const fetch = require('node-fetch').default;
 const API_URL = 'https://fakestoreapi.com/products';
 const readline = require('readline');
 
+
 async function fetchProductos(url) {
     try {
         const response = await fetch(url);
@@ -108,7 +109,12 @@ async function getProductById(id) {
     try {
         const response = await fetch(`${API_URL}/${id}`);
         if (!response.ok) throw new Error(`Producto con ID ${id} no encontrado`);
-        const product = await response.json();
+        const text = await response.text();
+        if (!text) {
+            console.log(`⚠️ El producto con ID ${id} no existe en la API.`);
+            return null;
+        }
+        const product = JSON.parse(text);
         console.log(`Producto con ID ${id}:`, product);
         return product;
     } catch (error) {
@@ -116,7 +122,7 @@ async function getProductById(id) {
     }
 }
 
-// Preguntar ID al usuario
+// Opcion 2: Buscar la información de un determinado producto preguntar ID al usuario
 function preguntarId() {
     return new Promise((resolve) => {
         const rl = readline.createInterface({
