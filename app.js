@@ -37,6 +37,42 @@ function guardarEnJSON(filename, data) {
         console.error('Error al guardar el archivo:', error);
     }
 }
+// ===== FILESYSTEM  =====
+const RUTA_JSON = 'productos.json';
+
+function leerLocal() {
+  try {
+    const txt = fs.readFileSync(RUTA_JSON, 'utf-8');
+    return txt.trim() ? JSON.parse(txt) : [];
+  } catch {
+    return [];
+  }
+}
+
+function escribirLocal(arr) {
+  fs.writeFileSync(RUTA_JSON, JSON.stringify(arr, null, 2), 'utf-8');
+}
+
+function agregarProductoLocal(producto) {
+  const list = leerLocal();
+  list.push(producto);
+  escribirLocal(list);
+  console.log('Agregado LOCAL:', producto);
+}
+
+function eliminarProductosMayoresA(limite) {
+  const list = leerLocal();
+  const out = list.filter(p => Number(p.price ?? p.precio ?? 0) <= Number(limite));
+  const removed = list.length - out.length;
+  escribirLocal(out);
+  console.log(`Eliminados ${removed} con price > ${limite}. Quedan ${out.length}.`);
+}
+
+function listarLocal() {
+  const list = leerLocal();
+  console.log('Contenido LOCAL:', list);
+}
+
 
 // Agregar un nuevo producto con el metodo POST
 
@@ -157,6 +193,11 @@ async function main() {
         console.log(productosLimitados);
     }
 
+    console.log('\n--- FILESYSTEM ---');
+    listarLocal();
+    agregarProductoLocal({ id: 999, title: 'Producto local demo', price: 4000 });
+    eliminarProductosMayoresA(3600);
+    
     console.log();
     console.log('Se agrego un nuevo producto');
     await agregarProducto();
